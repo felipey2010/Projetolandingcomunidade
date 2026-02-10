@@ -1,96 +1,141 @@
-import React from 'react';
-import { LucideIcon } from 'lucide-react';
+'use client'
 
-// Sistema de variantes e tamanhos escalavel
-export type ButtonVariant = 
-  | 'primary' 
-  | 'secondary' 
-  | 'outline' 
-  | 'outline-blue' 
-  | 'ghost' 
-  | 'danger'
-  | 'success';
+import { cn } from '@/lib/utils'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { Slot } from 'radix-ui'
+import * as React from 'react'
+import { Loader2 } from 'lucide-react'
 
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
+const buttonVariants = cva(
+  'relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-primary-foreground hover:bg-primary-hover',
+        destructive:
+          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+        outline:
+          'border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground hover:border-primary-hover',
+        'outline-primary':
+          'border bg-background shadow-xs hover:text-primary-destaque hover:border-primary-destaque text-primary-hover border-primary-hover',
+        secondary:
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        ghost:
+          'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        link: 'text-primary underline-offset-4 hover:underline',
+      },
+      size: {
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        xs: 'h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5',
+        sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
+        lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
+        icon: 'size-9',
+        'icon-xs': 'size-6 rounded-md',
+        'icon-sm': 'size-8',
+        'icon-lg': 'size-10',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default',
+    },
+  }
+)
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  children: React.ReactNode;
-  icon?: LucideIcon;
-  iconPosition?: 'left' | 'right';
-  fullWidth?: boolean;
-  loading?: boolean;
-}
+type ButtonProps = React.ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+    loading?: boolean
+    loadingText?: string
+    spinnerPosition?: 'left' | 'right'
+    icon?: React.ReactNode
+    iconPosition?: 'left' | 'right'
+  }
 
-const Button: React.FC<ButtonProps> = ({ 
-  variant = 'primary', 
-  size = 'md',
-  children, 
-  icon: Icon,
-  iconPosition = 'right',
-  fullWidth = false,
+function Button({
+  className,
+  variant = 'default',
+  size = 'default',
+  asChild = false,
   loading = false,
-  className = '',
+  loadingText = 'Carregando...',
+  spinnerPosition = 'left',
+  icon,
+  iconPosition = 'left',
+  children,
   disabled,
-  ...props 
-}) => {
-  // Estilos base
-  const baseStyles = "inline-flex items-center justify-center font-medium transition-all duration-300 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed";
-  
-  // Variantes de cor e estilo
-  const variants: Record<ButtonVariant, string> = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white border border-transparent shadow-sm hover:shadow-lg hover:shadow-blue-600/20",
-    secondary: "bg-zinc-800 hover:bg-zinc-700 text-white border border-zinc-700 hover:border-zinc-600",
-    outline: "border border-zinc-700 text-zinc-300 hover:text-white hover:border-zinc-500 hover:bg-zinc-800/50 bg-transparent",
-    "outline-blue": "border border-blue-600/50 text-blue-500 hover:bg-blue-600/10 hover:border-blue-500 hover:text-blue-400 bg-transparent",
-    ghost: "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent",
-    danger: "bg-red-600 hover:bg-red-700 text-white border border-transparent shadow-sm hover:shadow-lg hover:shadow-red-600/20",
-    success: "bg-green-600 hover:bg-green-700 text-white border border-transparent shadow-sm hover:shadow-lg hover:shadow-green-600/20",
-  };
+  ...props
+}: ButtonProps) {
+  const Comp = asChild ? Slot.Root : 'button'
 
-  // Tamanhos
-  const sizes: Record<ButtonSize, string> = {
-    sm: "px-3 py-1.5 text-xs rounded-md gap-1.5",
-    md: "px-4 py-2.5 text-sm rounded-lg gap-2",
-    lg: "px-6 py-3 text-base rounded-lg gap-2",
-    xl: "px-8 py-4 text-lg rounded-xl gap-3",
-  };
+  const ref = React.useRef<HTMLButtonElement>(null)
+  const [width, setWidth] = React.useState<number>()
 
-  // Tamanhos de icone baseado no tamanho do botao
-  const iconSizes: Record<ButtonSize, number> = {
-    sm: 14,
-    md: 16,
-    lg: 18,
-    xl: 20,
-  };
+  const hasIcon = Boolean(icon)
+  const isIconOnly = !children && (hasIcon || loading)
 
-  // Width
-  const widthClass = fullWidth ? 'w-full' : '';
+  React.useLayoutEffect(() => {
+    if (!ref.current) return
+    if (!loading) {
+      setWidth(ref.current.offsetWidth)
+    }
+  }, [loading, children])
+
+  const renderIcon = () => {
+    if (loading) {
+      return <Loader2 className="animate-spin" size={18} />
+    }
+
+    if (hasIcon && React.isValidElement(icon)) {
+      return React.cloneElement(icon as React.ReactElement)
+    }
+
+    return null
+  }
+
+  const content = (
+    <span
+      className={cn(
+        'inline-flex items-center gap-2 transition-opacity',
+        loading && 'opacity-90'
+      )}
+    >
+      {(iconPosition === 'left' && !loading) ||
+      (loading && spinnerPosition === 'left')
+        ? renderIcon()
+        : null}
+
+      {!isIconOnly && (loading ? loadingText : children)}
+
+      {(iconPosition === 'right' && !loading) ||
+      (loading && spinnerPosition === 'right')
+        ? renderIcon()
+        : null}
+    </span>
+  )
 
   return (
-    <button 
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${widthClass} ${className}`}
+    <Comp
+      ref={ref}
+      data-slot="button"
+      data-variant={variant}
+      data-size={size}
       disabled={disabled || loading}
+      aria-busy={loading}
+      aria-live="polite"
+      aria-label={
+        isIconOnly
+          ? (props['aria-label'] ??
+            (typeof children === 'string' ? children : 'Button'))
+          : props['aria-label']
+      }
+      className={cn(buttonVariants({ variant, size, className }))}
+      style={loading && width ? { width } : undefined}
       {...props}
     >
-      {loading ? (
-        <>
-          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Carregando...
-        </>
-      ) : (
-        <>
-          {Icon && iconPosition === 'left' && <Icon size={iconSizes[size]} />}
-          {children}
-          {Icon && iconPosition === 'right' && <Icon size={iconSizes[size]} />}
-        </>
-      )}
-    </button>
-  );
-};
+      {content}
+    </Comp>
+  )
+}
 
-export default Button;
+export { Button, buttonVariants }
