@@ -1,7 +1,10 @@
+'use client'
+
 import { ArrowRight, ExternalLink, Layers, Monitor } from 'lucide-react'
 import React from 'react'
 import { CHALLENGES_DATA } from '../../data'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 const ChallengeCard: React.FC<{
   number: string
@@ -14,15 +17,21 @@ const ChallengeCard: React.FC<{
     {/* Imagem cabecalho */}
     <div className="h-40 relative bg-background-secondary">
       <div className="absolute inset-0 bg-black/60 z-10"></div>
-      <img
+      <Image
+        width={100}
+        height={100}
+        priority
         src={`https://picsum.photos/seed/${imageIndex + 90}/600/400`}
         alt={title}
         className="w-full h-full object-cover opacity-60 mix-blend-overlay"
       />
       <div className="absolute inset-0 z-20 flex items-center justify-center gap-4">
-        <img
+        <Image
           src="/logo.svg"
           alt="Logo"
+          width={100}
+          height={100}
+          priority
           className="w-full max-w-16 drop-shadow-lg"
         />
         <div className="flex flex-col text-foreground drop-shadow-lg">
@@ -54,13 +63,20 @@ const ChallengeCard: React.FC<{
         {description}
       </p>
 
-      <button className="mt-auto w-full bg-[#151f32] hover:bg-[#1e2e4a] text-primary-destaque font-medium py-2.5 rounded-xl flex items-center justify-center text-sm transition-colors group/btn">
+      <Button
+        type="button"
+        icon={
+          <ArrowRight
+            size={16}
+            className="ml-2 transition-transform group-hover/btn:translate-x-1"
+          />
+        }
+        iconPosition="right"
+        onClick={() => {}}
+        className="mt-auto w-full h-10 bg-[#151f32] hover:bg-[#1e2e4a] text-primary-destaque font-medium py-2.5 rounded-xl flex items-center justify-center text-sm transition-colors group/btn"
+      >
         Ver desafio{' '}
-        <ArrowRight
-          size={16}
-          className="ml-2 transition-transform group-hover/btn:translate-x-1"
-        />
-      </button>
+      </Button>
     </div>
   </div>
 )
@@ -105,6 +121,7 @@ const Challenges: React.FC = () => {
             type="button"
             icon={<ExternalLink size={16} className="ml-2" />}
             iconPosition="right"
+            onClick={() => {}}
             className="bg-primary hover:bg-primary-hover text-foreground px-8 h-12 rounded-xl"
           >
             Ver todos os desafios

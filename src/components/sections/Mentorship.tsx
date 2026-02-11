@@ -1,6 +1,8 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
 import { Braces, Code2, Lightbulb, Smartphone } from 'lucide-react'
 import React from 'react'
-import { Button } from '@/components/ui/button'
 
 const Mentorship: React.FC = () => {
   const tracks = [
@@ -13,7 +15,6 @@ const Mentorship: React.FC = () => {
   return (
     <section id="mentorship" className="py-20 bg-background">
       <div className="max-w-6xl mx-auto px-6">
-        {/* Content cabecalho */}
         <div className="mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-left">
             Programa de mentoria
@@ -47,7 +48,6 @@ const Mentorship: React.FC = () => {
           </ul>
         </div>
 
-        {/* Grade de trilhas */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
           {tracks.map((track, idx) => (
             <div
@@ -64,12 +64,18 @@ const Mentorship: React.FC = () => {
 
         {/* Botoes de acao */}
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-          <Button className="w-full sm:w-auto min-w-50">
+          <Button
+            type="button"
+            onClick={() => {}}
+            className="w-full h-10 sm:w-auto min-w-50"
+          >
             Quero ser mentorado
           </Button>
           <Button
+            type="button"
+            onClick={() => {}}
             variant="outline-primary"
-            className="w-full sm:w-auto min-w-50"
+            className="w-full h-10 sm:w-auto min-w-50"
           >
             Quero ser mentor
           </Button>

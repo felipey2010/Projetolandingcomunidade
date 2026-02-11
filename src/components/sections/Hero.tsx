@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
+import Image from 'next/image'
 import React from 'react'
 
 const Hero: React.FC = () => {
@@ -20,9 +21,12 @@ const Hero: React.FC = () => {
         {/* Area da logo */}
         <div className="mb-2 md:mb-4 animate-fade-in-up">
           <div className="relative flex flex-col items-center">
-            <img
+            <Image
               src="/logo.svg"
               alt="RR Fullstack Developers"
+              width={128}
+              height={128}
+              priority
               className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 mb-4 drop-shadow-2xl"
             />
           </div>

@@ -1,7 +1,10 @@
+'use client'
+
 import { ArrowRight, Calendar, Monitor, Users } from 'lucide-react'
 import React from 'react'
 import { EVENTS, type Event } from '../../data'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 const EventCard: React.FC<Event> = ({
   number,
@@ -13,12 +16,14 @@ const EventCard: React.FC<Event> = ({
   imageIndex,
 }) => (
   <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col md:flex-row hover:border-muted transition-all duration-300 group h-full p-4">
-    {/* imagem esquerda */}
     <div className="w-full md:w-45 h-48 md:h-auto relative shrink-0 bg-background-secondary rounded-xl overflow-hidden">
       <div className="absolute inset-0 bg-black/60 z-10"></div>
-      <img
+      <Image
         src={`https://picsum.photos/seed/${imageIndex}/400/400`}
         alt={title}
+        width={100}
+        height={100}
+        priority
         className="w-full h-full object-cover opacity-50 mix-blend-overlay"
       />
 
@@ -36,7 +41,14 @@ const EventCard: React.FC<Event> = ({
         </div>
 
         <div className="max-h-20 flex justify-center">
-          <img src="/logo.svg" alt="Logo" className="h-full opacity-80" />
+          <Image
+            src="/logo.svg"
+            alt="Logo"
+            width={100}
+            height={100}
+            priority
+            className="h-full opacity-80"
+          />
         </div>
       </div>
     </div>
@@ -61,9 +73,13 @@ const EventCard: React.FC<Event> = ({
         </div>
       </div>
 
-      <button className="w-full bg-[#182845] hover:bg-primary text-primary-destaque hover:text-foreground border border-blue-900/30 hover:border-transparent py-2.5 rounded-lg text-sm font-medium transition-all duration-300">
+      <Button
+        type="button"
+        onClick={() => {}}
+        className="w-full h-10 bg-[#182845] text-primary-destaque hover:text-foreground border border-blue-900/30 hover:border-transparent py-2.5 rounded-lg text-sm font-medium transition-all duration-300"
+      >
         Inscreva-se agora
-      </button>
+      </Button>
     </div>
   </div>
 )
@@ -90,7 +106,10 @@ const Events: React.FC = () => {
         </div>
 
         <div className="flex justify-center w-full">
-          <Button className="bg-primary hover:bg-primary-hover text-foreground px-8 h-12 w-full sm:w-auto">
+          <Button
+            onClick={() => {}}
+            className="bg-primary hover:bg-primary-hover text-foreground px-8 h-12 w-full sm:w-auto"
+          >
             Ver todos os eventos <ArrowRight className="ml-2 w-4 h-4" />
           </Button>
         </div>

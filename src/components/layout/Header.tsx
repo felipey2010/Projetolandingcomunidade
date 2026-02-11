@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ArrowRight, ChevronRight, Menu, X } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Header: React.FC = () => {
@@ -89,22 +91,25 @@ const Header: React.FC = () => {
               : 'bg-transparent'
           )}
         >
-          <a
+          <Link
             href="#home"
             onClick={(e) => handleNavClick(e, 'home')}
             className="flex items-center gap-3 group z-50 relative focus:outline-none"
           >
-            <img
+            <Image
               src="/logo-horizontal.svg"
               alt="RR Fullstack Developers"
+              height={40}
+              width={40}
+              priority
               className="h-8 md:h-10 w-auto transition-transform group-hover:scale-105"
             />
-          </a>
+          </Link>
 
           {/* Navegacao Desktop */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.id)}
@@ -116,7 +121,7 @@ const Header: React.FC = () => {
                 )}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -138,14 +143,14 @@ const Header: React.FC = () => {
             </Button>
           </div>
 
-          {/* Botao alternador menu mobile */}
-          <button
-            className="md:hidden text-zinc-300 hover:text-foreground p-2 z-50 relative focus:outline-none"
+          <Button
+            type="button"
+            className="md:hidden text-zinc-300 hover:text-foreground bg-transparent hover:bg-background-secondary p-2 z-50 relative focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -160,7 +165,7 @@ const Header: React.FC = () => {
         <div className="flex flex-col h-full pt-28 pb-10 px-6 overflow-y-auto">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link, idx) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.id)}
@@ -180,7 +185,7 @@ const Header: React.FC = () => {
                       : 'opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0'
                   }`}
                 />
-              </a>
+              </Link>
             ))}
           </nav>
 
