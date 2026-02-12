@@ -38,7 +38,6 @@ const Header: React.FC = () => {
         top: offsetPosition,
         behavior: 'smooth',
       })
-
       setActiveSection(id)
       setIsMobileMenuOpen(false)
       window.history.pushState(null, '', `#${id}`)
@@ -71,7 +70,6 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Bloqueia o scroll do body quando o menu mobile e aberto
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -85,10 +83,10 @@ const Header: React.FC = () => {
       <header className="flex items-center justify-center fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 py-4 md:py-6">
         <div
           className={cn(
-            'w-full max-w-7xl mx-6 h-auto p-4 flex items-center justify-between rounded-2xl transition-all duration-300',
+            'w-full max-w-7xl mx-6 h-auto p-4 flex items-center justify-between rounded-2xl transition-all duration-300 border',
             isScrolled || isMobileMenuOpen
-              ? 'bg-header-background backdrop-blur-lg border border-subtle'
-              : 'bg-transparent'
+              ? 'bg-header-background backdrop-blur-lg border-subtle'
+              : 'bg-transparent border-transparent'
           )}
         >
           <Link
@@ -106,7 +104,6 @@ const Header: React.FC = () => {
             />
           </Link>
 
-          {/* Navegacao Desktop */}
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
@@ -114,9 +111,9 @@ const Header: React.FC = () => {
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.id)}
                 className={cn(
-                  'px-4 py-2 text-sm text-center rounded-4xl transition-all focus:outline-none',
+                  'px-4 py-2 text-sm font-medium text-center rounded-4xl transition-all focus:outline-none',
                   activeSection === link.id
-                    ? 'text-foreground bg-card font-medium'
+                    ? 'text-foreground bg-card'
                     : 'text-muted-foreground hover:text-foreground hover:bg-card/50'
                 )}
               >
@@ -125,7 +122,6 @@ const Header: React.FC = () => {
             ))}
           </nav>
 
-          {/* Botao CTA Desktop */}
           <div className="hidden md:block">
             <Button
               type="button"
@@ -154,7 +150,6 @@ const Header: React.FC = () => {
         </div>
       </header>
 
-      {/* Overlay menu mobile */}
       <div
         className={`fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden transition-all duration-500 ease-in-out ${
           isMobileMenuOpen

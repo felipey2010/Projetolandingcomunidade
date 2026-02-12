@@ -1,10 +1,10 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { ArrowRight, Calendar, Monitor, Users } from 'lucide-react'
+import Image from 'next/image'
 import React from 'react'
 import { EVENTS, type Event } from '../../data'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
 
 const EventCard: React.FC<Event> = ({
   number,
@@ -60,7 +60,6 @@ const EventCard: React.FC<Event> = ({
           {description}
         </p>
 
-        {/* Tags metadados */}
         <div className="flex flex-wrap gap-2 mb-5">
           <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-background-secondary border border-zinc-700 text-xs text-zinc-300">
             <Calendar size={12} />
@@ -107,6 +106,7 @@ const Events: React.FC = () => {
 
         <div className="flex justify-center w-full">
           <Button
+            type="button"
             onClick={() => {}}
             className="bg-primary hover:bg-primary-hover text-foreground px-8 h-12 w-full sm:w-auto"
           >

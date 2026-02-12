@@ -1,20 +1,30 @@
 'use client'
 
-import { ArrowRight, ExternalLink, Layers, Monitor } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  ArrowRight,
+  ExternalLink,
+  Layers,
+  LucideProps,
+  Monitor,
+} from 'lucide-react'
+import Image from 'next/image'
 import React from 'react'
 import { CHALLENGES_DATA } from '../../data'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
 
 const ChallengeCard: React.FC<{
   number: string
   title: string
   description: string
-  tags: { icon: React.ReactNode; label: string }[]
+  tags: {
+    icon: React.ForwardRefExoticComponent<
+      Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+    > | null
+    label: string
+  }[]
   imageIndex: number
 }> = ({ number, title, description, tags, imageIndex }) => (
   <div className="bg-card border border-border rounded-xl overflow-hidden flex flex-col h-full hover:border-muted transition-all duration-300 group">
-    {/* Imagem cabecalho */}
     <div className="h-40 relative bg-background-secondary">
       <div className="absolute inset-0 bg-black/60 z-10"></div>
       <Image
@@ -41,7 +51,6 @@ const ChallengeCard: React.FC<{
       </div>
     </div>
 
-    {/* Content */}
     <div className="p-5 flex flex-col grow">
       <h3 className="text-lg font-bold text-foreground mb-4 line-clamp-1">
         {title}
@@ -53,7 +62,7 @@ const ChallengeCard: React.FC<{
             key={i}
             className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-background-secondary-subtle border border-border text-[10px] uppercase tracking-wider font-semibold text-muted-foreground"
           >
-            {tag.icon}
+            {tag.icon && <tag.icon size={12} />}
             {tag.label}
           </div>
         ))}
@@ -82,16 +91,10 @@ const ChallengeCard: React.FC<{
 )
 
 const Challenges: React.FC = () => {
-  // Injetando icones nos dados
   const challenges = CHALLENGES_DATA.map((challenge) => ({
     ...challenge,
     tags: challenge.tags.map((tag) => ({
-      icon:
-        tag.iconName === 'Monitor' ? (
-          <Monitor size={12} />
-        ) : (
-          <Layers size={12} />
-        ),
+      icon: getChallengeIcon(tag.iconName),
       label: tag.label,
     })),
   }))
@@ -133,3 +136,18 @@ const Challenges: React.FC = () => {
 }
 
 export default Challenges
+
+const getChallengeIcon = (
+  iconName: string
+): React.ForwardRefExoticComponent<
+  Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
+> | null => {
+  switch (iconName) {
+    case 'Monitor':
+      return Monitor
+    case 'Layers':
+      return Layers
+    default:
+      return null
+  }
+}

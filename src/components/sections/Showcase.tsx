@@ -33,6 +33,7 @@ const Showcase: React.FC = () => {
           </div>
           <div className="shrink-0 w-full md:w-auto">
             <Button
+              type="button"
               icon={<Plus size={18} className="mr-2" />}
               iconPosition="left"
               size="lg"
@@ -151,6 +152,7 @@ const Showcase: React.FC = () => {
 
         <div className="mt-12 text-center">
           <Button
+            type="button"
             variant="outline-primary"
             size="lg"
             className="px-8 w-full h-10 sm:w-auto"

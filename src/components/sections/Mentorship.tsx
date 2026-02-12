@@ -62,7 +62,6 @@ const Mentorship: React.FC = () => {
           ))}
         </div>
 
-        {/* Botoes de acao */}
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
           <Button
             type="button"

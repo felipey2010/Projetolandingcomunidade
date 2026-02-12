@@ -11,10 +11,8 @@ const Hero: React.FC = () => {
       id="home"
       className="relative min-h-screen flex flex-col items-center justify-center pt-28 pb-12 bg-background overflow-hidden"
     >
-      {/* Padrao de fundo */}
       <div className="absolute inset-0 bg-[radial-gradient(#222_1px,transparent_1px)] [bg-size:24px_24px] opacity-20 pointer-events-none"></div>
 
-      {/* Ambient light - Responsive positioning */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-150 md:max-w-250 h-75 md:h-100 bg-blue-900/20 blur-[80px] md:blur-[120px] pointer-events-none rounded-full"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center gap-6 md:gap-8">
@@ -46,9 +44,9 @@ const Hero: React.FC = () => {
           referências em tecnologia de Roraima.
         </p>
 
-        {/* Chamada para acao */}
         <div className="pt-4 sm:pt-6 w-full flex justify-center animate-fade-in-up delay-300">
           <Button
+            type="button"
             className="w-full sm:w-auto h-12 px-8 text-base shadow-[0_0_20px_rgba(37,99,235,0.3)] hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] transition-shadow duration-300"
             icon={<ArrowRight size={18} />}
             iconPosition="right"
