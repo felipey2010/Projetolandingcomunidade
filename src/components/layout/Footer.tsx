@@ -64,16 +64,20 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex gap-4 md:gap-6 mb-8 md:mb-12 flex-wrap justify-center">
-          {socialMediaLinks.map((social, i) => (
-            <Link
-              key={i}
-              href={social.url}
-              className="p-2.5 bg-background-secondary text-zinc-300 rounded-full hover:bg-primary hover:text-foreground transition-all hover:scale-110 duration-300 hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
-            >
-              <social.icon size={20} />
-              <span className="sr-only">{social.name}</span>
-            </Link>
-          ))}
+          {socialMediaLinks.map((social, i) => {
+            const Icon = social.icon
+
+            return (
+              <Link
+                key={i}
+                href={social.url}
+                className="p-2.5 bg-background-secondary text-zinc-300 rounded-full hover:bg-primary hover:text-foreground transition-all hover:scale-110 duration-300 hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]"
+              >
+                <Icon size={20} />
+                <span className="sr-only">{social.name}</span>
+              </Link>
+            )
+          })}
         </div>
 
         <div className="flex flex-col md:flex-row items-center gap-4 text-center">
